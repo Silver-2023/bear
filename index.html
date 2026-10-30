@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Opening Bear</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         background: #f7f5f2; color: #333; display: flex; align-items: center;
+         justify-content: center; min-height: 100vh; margin: 0; padding: 16px; text-align: center; }
+  a.btn { display: inline-block; margin-top: 16px; padding: 12px 22px; background: #d9534f;
+          color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; }
+  p { max-width: 360px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div>
+  <p id="msg">Opening your note in Bear…</p>
+  <a id="btn" class="btn" href="#" style="display:none">Open in Bear</a>
+</div>
+<script>
+  (function () {
+    var id = new URLSearchParams(window.location.search).get("id") || "";
+    // Accept only a standard Bear note ID (UUID format) - nothing else.
+    var valid = /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/.test(id);
+    var msg = document.getElementById("msg");
+    var btn = document.getElementById("btn");
+    if (!valid) {
+      msg.textContent = "This link is not valid.";
+      return;
+    }
+    var target = "bear://x-callback-url/open-note?id=" + id;
+    btn.href = target;
+    btn.style.display = "inline-block";
+    msg.textContent = "Opening your note in Bear… If nothing happens, tap the button.";
+    window.location.href = target;
+  })();
+</script>
+</body>
+</html>
